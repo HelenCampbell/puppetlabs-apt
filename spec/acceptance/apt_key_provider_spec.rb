@@ -34,7 +34,7 @@ end
 def install_key(key)
   retry_on_error_matching(MAX_TIMEOUT_RETRY, TIMEOUT_RETRY_WAIT, TIMEOUT_ERROR_MATCHER) do
     shell("wget -O /tmp/sks-keyservers.netCA.pem https://sks-keyservers.net/sks-keyservers.netCA.pem && apt-key adv --keyserver hkps://hkps.pool.sks-keyservers.net \
-             --keyserver-options ca-cert-file=/tmp/sks-keyservers.netCA.pem  --recv-keys #{key}")
+             --keyserver-options hkp-cacert=/tmp/sks-keyservers.netCA.pem  --recv-keys #{key}")
   end
 end
 
@@ -388,7 +388,7 @@ hkps_pool_pp = <<-MANIFEST
           id      => '#{PUPPETLABS_GPG_KEY_LONG_ID}',
           ensure  => 'present',
           server  => 'hkps://hkps.pool.sks-keyservers.net',
-          options => 'ca-cert-file=/tmp/sks-keyservers.netCA.pem',
+          options => 'hkp-cacert=/tmp/sks-keyservers.netCA.pem',
         }
   MANIFEST
 
